@@ -17,43 +17,56 @@
         <div class="row g-5">
             <!-- Right Side (Card) -->
             @foreach ( $cart_items as $cart_item )
-            <div class="col-lg-4">
+  <div class="col-lg-4 cart-item">
+    <div class="bg-light p-4 rounded shadow position-relative">
 
-                <div class="bg-light p-4 rounded shadow">
+        <!-- Delete Button -->
+        <form action="{{route('site.delete.cart', $cart_item->id)}}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button
 
-                    <!-- title -->
-                    <h3 class="text-primary mb-3">
-                       {{ $cart_item->course->title }}
-                    </h3>
+                type="submit"
+                class="delcourse btn btn-danger btn-sm position-absolute top-0 end-0 m-2 rounded-circle" style="width:35px; height:35px;">
+                <i class="fa fa-times"></i>
+            </button>
+        </form>
 
+        <!-- title -->
+        <h3 class="text-primary mb-3">
+            {{ $cart_item->course->title }}
+        </h3>
 
-                    <!-- Extra Info -->
-                    <ul class="list-unstyled">
+        <!-- Extra Info -->
+        <ul class="list-unstyled">
 
-                     <li class="mb-2">
-                            <i class="fa  text-primary me-2">$</i>
-                            Price:  ${{ number_format($cart_item->course->price, 0, '.', '') }}
-                        </li>
+            <li class="mb-2">
+                <i class="fa text-primary me-2">$</i>
+                Price:
+                ${{ number_format($cart_item->course->price, 0, '.', '') }}
+            </li>
 
-                        <li class="mb-2">
-                            <i class="fa fa-clock text-primary me-2"></i>
-                            Duration:{{ $cart_item->course->duration }}
-                        </li>
+            <li class="mb-2">
+                <i class="fa fa-clock text-primary me-2"></i>
+                Duration:
+                {{ $cart_item->course->duration }}
+            </li>
 
-                        <li class="mb-2">
-                            <i class="fa fa-user text-primary me-2"></i>
-                            Students:{{ $cart_item->course->students->count()}}
-                        </li>
+            <li class="mb-2">
+                <i class="fa fa-user text-primary me-2"></i>
+                Students:
+                {{ $cart_item->course->students->count()}}
+            </li>
 
-                        <li>
-                            <i class="fa fa-user-tie text-primary me-2"></i>
-                            Teacher:{{ $cart_item->course->teacher->user->name }}
-                        </li>
-                    </ul>
+            <li>
+                <i class="fa fa-user-tie text-primary me-2"></i>
+                Teacher:
+                {{ $cart_item->course->teacher->user->name }}
+            </li>
 
-                </div>
-
-            </div>
+        </ul>
+    </div>
+</div>
             @endforeach
 
               <div class="bg-light p-4 rounded shadow">
@@ -113,5 +126,55 @@ Toast.fire({
 
 </script>
 
+
+
+<script>
+
+document.querySelectorAll('.delcourse').forEach(button => {
+    button.onclick = function(e){
+        e.preventDefault();
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+
+            if(result.isConfirmed){
+
+                let form = button.closest('form');
+
+                $.ajax({
+                    url: form.action,
+                    type: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        _method: "DELETE"
+                    },
+
+                    success: function(res){
+
+                        document.getElementById('cart-count').innerText = res.count;
+
+                        button.closest('.cart-item').remove();
+
+                        Swal.fire({
+                            icon: res.type,
+                            title: res.msg,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    }
+                });
+            }
+
+        });
+    }
+});
+</script>
 
 @endsection

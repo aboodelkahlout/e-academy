@@ -28,10 +28,12 @@
 
                 <!-- Teacher + Info -->
                 <div class="d-flex mb-3">
-                    <span class="me-4">
-                        <i class="fa fa-user text-primary me-2"></i>
+                <a href="{{ route('site.teacherdetails', $course->teacher->id) }}" class="text-decoration-none text-dark">
+                <span class="me-4">
+                    <i class="fa fa-user text-primary me-2"></i>
                         {{$course->teacher->user->name}}
                     </span>
+                </a>
 
                     <span class="me-4">
                         <i class="fa fa-clock text-primary me-2"></i>
@@ -80,8 +82,12 @@
                         </li>
 
                         <li>
-                            <i class="fa fa-user-tie text-primary me-2"></i>
-                            Teacher: {{$course->teacher->user->name}}
+                          <a href="{{ route('site.teacherdetails', $course->teacher->id) }}" class="text-decoration-none text-dark">
+                <span class="me-4">
+                    <i class="fa fa-user text-primary me-2"></i>
+                        teacher: {{$course->teacher->user->name}}
+                    </span>
+                </a>
                         </li>
                     </ul>
 
@@ -99,6 +105,33 @@
 @section('js')
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  }
+});
+
+
+@if (session('msg'))
+Toast.fire({
+  icon: "{{session('type')}}",
+  title: "{{session('msg')}}"
+});
+@endif
+
+</script>
+
+
 
 <script>
 
@@ -158,3 +191,4 @@
 
 
 @endsection
+

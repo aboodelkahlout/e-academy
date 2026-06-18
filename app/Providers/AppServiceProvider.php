@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
         //
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         Paginator::useBootstrapFive();
+        // URL::forceScheme('https');
 
         View::composer('*', function ($view) {
 

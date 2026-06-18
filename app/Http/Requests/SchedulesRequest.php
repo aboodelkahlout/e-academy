@@ -26,6 +26,7 @@ class SchedulesRequest extends FormRequest
                 'start_time' => ['required', 'date_format:H:i' ,'before:end_time'],
                 'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
                 'is_available' => ['required', 'boolean'],
+                'link'=>['required']
             ];
         }
 

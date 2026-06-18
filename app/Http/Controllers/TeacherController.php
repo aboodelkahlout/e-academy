@@ -9,6 +9,7 @@ use App\Models\appointment;
 use App\Models\category;
 use App\Models\course_student;
 use App\Models\course;
+use App\Models\CourseVideo;
 use App\Models\teacher;
 use App\Models\teacher_schedule;
 use GrahamCampbell\ResultType\Success;
@@ -276,6 +277,38 @@ class TeacherController extends Controller
         $schedule->delete();
 
         return response()->json(['success'=>true]);
+
+    }
+
+    function createvideo(Request $request , course $course){
+
+        return view('teacher.addvideo',compact('course'));
+
+    }
+
+    function storevideo(Request $request , course $course){
+
+
+        $request->validate([
+             'title'=>'required|string|max:255',
+             'duration'=>'required|integer|min:0',
+             'video_path' =>  'required|file|max:200000',
+                ]);
+
+
+        $file = $request->file('video_path');
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('video'), $filename);
+
+
+       $data= CourseVideo::create([
+            'course_id' => $course->id,
+            'title'=> $request->title,
+            'duration' => $request->duration,
+            'video_path' => $filename
+        ]);
+
+        return redirect()->route('teacher.course.video.create', $course->id)->with('msg', 'Video uploaded successfully')->with('type', 'success');
 
     }
 

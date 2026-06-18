@@ -24,12 +24,21 @@ Route::prefix('site')->name('site.')->group(function(){
     Route::post('course/{id}/addcart/',[SiteController::class ,'addtocart'])->name('addtocart')->middleware('auth');
     Route::get('course/showcart',[SiteController::class , 'showcart'])->name('showcart');
     Route::get('checkout',[SiteController::class,'checkout'])->name('checkout');
-    Route::get('payment',[SiteController::class,'payment'])->name('payment');
-    Route::post('payment',[SiteController::class,'paymentaction'])->name('paymentaction');
-    Route::get('pay/action/',[SiteController::class , 'payaction'])->name('payaction');
-
-
+    Route::get('payment/page',[SiteController::class,'showpaymentpage'])->name('showpaymentpage');
+    Route::post('payment/confirm/page',[SiteController::class,'paymentconfirmpage'])->name('paymentconfirmpage');
+    Route::get('payment/callback', [SiteController::class, 'paymentCallback'])->name('payment.callback');
+    Route::delete('delete/item/cart/{id}',[SiteController::class, 'deletecart'])->name('delete.cart');
+    Route::post('/kashier/webhook', [SiteController::class, 'webhook']);
+    Route::get('contact',[SiteController::class,'contact'])->name('contact');
+    Route::post('contact/us',[SiteController::class,'contactus'])->name('contactus');
+    Route::get('about',[SiteController::class,'about'])->name('about');
+    Route::get('payment/{schedule_id}', [SiteController::class, 'payment'])->name('payment');
+    Route::post('payment/confirm/appointment/page/{id}',[SiteController::class,'confirmappointment'])->name('confirmappointment');
+    Route::get('payment/appointment/callback/', [SiteController::class, 'appointmentPaymentCallback'])->name('payment.appointment.callback');
+    Route::post('/course/{course}/comment', [SiteController::class, 'store'])->name('comments.store');
 });
+
+
 
 Route::get('verfiy/youremail/{id}',[AdminController::class,'verfiyemail'])->name('verfiy.email');
 
@@ -39,9 +48,9 @@ Route::group([
     'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
 ], function() {
 
-    // Route::get('/student/dashboard', function () {
-    //     return view('student.dashboard');
-    // })->middleware(['auth', 'verified','CheckRole:student'])->name('dashboard');
+    Route::get('/student/dashboard', function () {
+        return view('student.dashboard');
+    })->middleware(['auth', 'verified','CheckRole:student'])->name('dashboard');
 
 
     Route::prefix('student')->name('student.')->middleware(['auth', 'verified','CheckRole:student'])->group(function(){
@@ -50,8 +59,11 @@ Route::group([
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::get('course/show/{id}/video',[StudentController::class,'showfirstvideo'])->name('show.first.video');
+        Route::get('course/show/next/{id}/{course}',[StudentController::class,'nextvideos'])->name('show.next.video');
+        Route::get('my/appointment',[StudentController::class,'myappointment'])->name('my.appointment');
+        Route::post('course/{course}/comment/{video}',[StudentController::class,'storecomment'])->name('comment.store');
     });
-
 
 
     Route::middleware('auth')->group(function () {
@@ -90,6 +102,9 @@ Route::group([
         Route::post('schedules/update', [TeacherController::class, 'updateField']);
         Route::post('schedules/toggle-status', [TeacherController::class, 'toggleStatus']);
         Route::delete('schedules/delete/{id}',[TeacherController::class, 'deleteschedules'])->name('schedules.delete');
+        Route::get('/course/{course}/video',[TeacherController::class , 'createvideo'])->name('course.video.create');
+        Route::post('course/{course}/store',[TeacherController::class, 'storevideo'])->name('course.video.store');
+
  });
 
 

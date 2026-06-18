@@ -19,8 +19,8 @@
             <th>price</th>
             <th>course_cover</th>
             <th>created_at</th>
-            <th>updated_at</th>
             <th>action</th>
+            <th>add video</th>
         </tr>
     </thead>
     <tbody>
@@ -36,7 +36,6 @@
         <td>{{$course->price}}</td>
         <td><img src="{{asset('cover/' . $course->course_cover)}}" width="50px" alt=""></td>
         <td>{{$course->created_at}}</td>
-        <td>{{$course->updated_at}}</td>
         <td class="d-flex gap-2">
             <form class="form" action="{{route('teacher.course.destroy' , $course->id)}}" method="post">
                 @csrf
@@ -49,6 +48,11 @@
             <a href="{{route('teacher.course.edit' , $course->id)}}"  type="button" class="updatelink btn btn-primary">
             <i class="fas fa-edit"></i>
            </a>
+        </td>
+        <td>
+             <a href="{{route('teacher.course.video.create' , $course->id)}}" class="btn btn-success">
+                <i class="fas fa-plus"></i>
+             </a>
         </td>
     </tr>
         @empty

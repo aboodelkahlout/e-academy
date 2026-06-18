@@ -263,6 +263,13 @@
       </a>
     </li>
 
+     <li class="nav-item">
+      <a href="{{ route('student.my.appointment') }}" class="nav-link">
+        <i class="nav-icon fas fa-calendar-alt"></i>
+        <p>{{ __('app.myappointment') }}</p>
+      </a>
+    </li>
+
   </ul>
 </nav>
       <!-- /.sidebar-menu -->

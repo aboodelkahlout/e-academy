@@ -66,19 +66,12 @@
                     </div>
                 </div>
             @endforeach
-
-                <!-- كرر الكارد -->
-
             </div>
-
         </div>
 
         <!-- Schedule Tab -->
         <div class="tab-pane fade" id="schedule">
                 <div id='calendar'></div>
-
-            <!-- كرر المواعيد -->
-
         </div>
 
     </div>
@@ -95,6 +88,36 @@
 @endsection
 
 @section('js')
+
+
+
+<script>
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  }
+});
+
+
+@if (session('msg'))
+Toast.fire({
+  icon: "{{session('type')}}",
+  title: "{{session('msg')}}"
+});
+@endif
+
+</script>
+
+
+
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

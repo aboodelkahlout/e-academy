@@ -18,4 +18,5 @@
     'start'=>'Start Time',
     'end'=>'End Time',
     'site'=>'Website',
+    'myappointment'=>'My Appointment',
  ];

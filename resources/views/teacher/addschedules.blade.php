@@ -64,6 +64,21 @@
         @enderror
     </div>
 
+    <div class="mb-3">
+        <label>لينك المقابلة</label>
+        <input
+            type="text"
+            name="link"
+            value="{{ old('link') }}"
+            class="form-control @error('link') is-invalid @enderror">
+
+        @error('link')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+
+
     <button class="btn btn-primary">حفظ</button>
 </form>
 

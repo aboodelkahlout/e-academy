@@ -9,7 +9,7 @@
         <div class="card-body">
 
           <h5 class="card-title">
-            
+
              {{ __('app.date') }} : {{ $schedule->date }}
           </h5>
 
@@ -26,16 +26,16 @@
           </p>
 
           @if($schedule->is_available)
-            <button class="btn btn-primary btn-sm">
+            <a  href="{{route('site.payment', $schedule->id)}}" class="btn btn-primary btn-sm">
               حجز
-            </button>
+            </a>
           @endif
 
         </div>
       </div>
     </div>
 
-   
+
     @endforeach
 
   </div>

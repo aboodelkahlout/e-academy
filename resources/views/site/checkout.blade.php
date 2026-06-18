@@ -57,19 +57,48 @@
                         <strong>${{ $total }}</strong>
                     </div>
 
-                    <form action="{{route('site.paymentaction')}}" method="POST">
+                    <form action="{{route('site.paymentconfirmpage')}}" method="POST">
                         @csrf
                         <button class="btn btn-primary w-100">
                             Pay Now
                         </button>
                     </form>
-
                 </div>
-
             </div>
 
         </div>
     </div>
 </div>
+
+@endsection
+
+@section('js')
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  }
+});
+
+
+@if (session('msg'))
+Toast.fire({
+  icon: "{{session('type')}}",
+  title: "{{session('msg')}}"
+});
+@endif
+
+</script>
+
 
 @endsection

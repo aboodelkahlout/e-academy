@@ -18,9 +18,6 @@ class course extends Model
         return $this->belongsTo(teacher::class);
     }
 
-    function video_course(){
-     return $this->hasMany(course_video::class);
-    }
 
 
     public function students(){
@@ -41,6 +38,12 @@ public function category(){
 
 public function order_item(){
     return $this->hasMany(order_item::class);
+}
+
+
+public function videos()
+{
+    return $this->hasMany(CourseVideo::class);
 }
 
 
